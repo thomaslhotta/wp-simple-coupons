@@ -148,7 +148,7 @@ class WP_Simple_Coupons {
 	}
 
 	public function render_codes_metabox( WP_Post $coupon ) {
-		$codes = $this->get_helper()->get_existing_coupon_codes( $coupon->ID );
+		$stats = $this->get_helper()->get_coupon_stats( $coupon->ID );
 
 		$ajax_url = add_query_arg(
 			array(
@@ -159,8 +159,32 @@ class WP_Simple_Coupons {
 		);
 
 		printf(
-			'<a href="%s">Download</a>',
-			wp_nonce_url( $ajax_url, 'download_codes' )
+			'<table class="form-table">
+				<tr>
+					<th>%s</th>
+					<td>%s</td>
+				</tr>
+				<tr>
+					<th>%s</th>
+					<td>%s</td>
+				</tr>
+				<tr>
+					<th>%s</th>
+					<td>%s</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><a href="%s">%s</a></td>
+				</tr>
+			</table>',
+			__( 'Total', 'wp-simple-coupons' ),
+			$stats['total'],
+			__( 'Used', 'wp-simple-coupons' ),
+			$stats['used'],
+			__( 'Unused', 'wp-simple-coupons' ),
+			$stats['unused'],
+			wp_nonce_url( $ajax_url, 'download_codes' ),
+			__( 'Download', 'wp-simple-coupons' )
 		);
 	}
 
@@ -173,7 +197,7 @@ class WP_Simple_Coupons {
 			exit;
 		}
 
-		if ( current_user_can( 'edit_post', $post->ID ) ) {
+		if ( ! current_user_can( 'edit_post', $post->ID ) ) {
 			http_response_code( 403 );
 			exit;
 		}
@@ -201,7 +225,7 @@ class WP_Simple_Coupons {
 
 		$codes = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT code, secondary_id FROM $table WHERE blog_id = %d AND post_id = %d",
+				"SELECT code, association_id FROM $table WHERE blog_id = %d AND post_id = %d",
 				get_current_blog_id(),
 				$post->ID
 			),

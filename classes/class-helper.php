@@ -18,6 +18,42 @@ class WP_Simple_Coupons_Helper {
 	}
 
 	/**
+	 * Returns the coupon stats
+	 *
+	 * @param $coupon_id
+	 *
+	 * @return array
+	 */
+
+	public function get_coupon_stats( $coupon_id ) {
+		global $wpdb;
+
+		$table = $this->get_coupon_codes_table();
+
+		$unused = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT( code ) FROM $table WHERE blog_id = %d AND post_id = %d AND association_id IS NULL",
+				get_current_blog_id(),
+				$coupon_id
+			)
+		);
+
+		$used = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT( code ) FROM $table WHERE blog_id = %d AND post_id = %d AND association_id IS NOT NULL",
+				get_current_blog_id(),
+				$coupon_id
+			)
+		);
+
+		return array(
+			'used'   => $used,
+			'unused' => $unused,
+			'total'  => $used + $unused,
+		);
+	}
+
+	/**
 	 * Returns an array containing the existing codes
 	 *
 	 * @param $post_id
