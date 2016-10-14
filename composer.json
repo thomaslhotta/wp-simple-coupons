@@ -9,18 +9,5 @@
 		  "email": "thomas.lhotta@gmail.com"
 	  }
 	],
-	"require": {},
-	"scripts": {
-		"post-package-install": [
-		  "WP_Simple_Coupons_Composer_Installer::install_translations"
-		],
-	  	"post-package-update": [
-		  "WP_Simple_Coupons_Composer_Installer::install_translations"
-		]
-	},
-	"autoload": {
-	    "classmap": [
-		 	"composer/class-installer.php"
-		]
-	}
+	"require": {}
 }

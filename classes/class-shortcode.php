@@ -50,9 +50,11 @@ class WP_Simple_Coupons_Shortcodes {
 
 		$options = '';
 		foreach ( $this->helper->get_all_coupons() as $c ) {
+			//name= is only set as a visual hint and not actually used
 			$options .= sprintf(
-				'<option value="[coupon id=%d]">%s</option>',
+				'<option value="[coupon id=%d name=%s]">%s</option>',
 				$c->ID,
+				esc_attr( $c->post_title ),
 				esc_html( $c->post_title )
 			);
 		}
