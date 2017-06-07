@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles the integration with kjero functions
+ * Handles shortcode
  */
 class WP_Simple_Coupons_Shortcodes {
 
@@ -22,18 +22,26 @@ class WP_Simple_Coupons_Shortcodes {
 	/**
 	 * Render the shortcode
 	 *
-	 * @todo Add "no more coupons available" text option
 	 * @param $atts
 	 *
-	 * @return string|void
+	 * @return string
 	 */
 	public function render_shortcode( $atts ) {
 		if ( ! is_user_logged_in() ) {
 			return '';
 		}
 
+		$atts = shortcode_atts(
+			array(
+				'id' => '',
+				'error_message' => '',
+			),
+			$atts,
+			'simple_coupons_shortcode'
+		);
+
 		if ( empty( $atts['id'] ) ) {
-			return '';
+			return strip_tags( $atts['error_message'] );
 		}
 
 		return esc_attr( $this->helper->associate_code( $atts['id'], get_current_user_id() ) );

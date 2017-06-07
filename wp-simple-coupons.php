@@ -5,7 +5,7 @@
  * Plugin Name:       WP Simple Coupons
  * Plugin URI:        https://github.com/thomaslhotta/wp-simple-coupons
  * Description:       A simple coupon distribution plugin, no more, no less
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Thomas Lhotta
  * Author URI:        https://github.com/thomaslhotta
  * License:           MIT
@@ -29,11 +29,6 @@ class WP_Simple_Coupons {
 	 * @var WP_Simple_Coupons_Shortcodes
 	 */
 	protected $shortcodes;
-
-	/**
-	 * @var WP_Simple_Coupons_Kjero
-	 */
-	protected $kjero;
 
 	/**
 	 * Returns the singleton instance
@@ -147,6 +142,11 @@ class WP_Simple_Coupons {
 		);
 	}
 
+	/**
+	 * Renders the codes metabox
+	 *
+	 * @param WP_Post $coupon
+	 */
 	public function render_codes_metabox( WP_Post $coupon ) {
 		$stats = $this->get_helper()->get_coupon_stats( $coupon->ID );
 
@@ -188,6 +188,9 @@ class WP_Simple_Coupons {
 		);
 	}
 
+	/**
+	 * Creates a CSV download
+	 */
 	public function download_codes() {
 		check_ajax_referer( 'download_codes' );
 
@@ -240,6 +243,11 @@ class WP_Simple_Coupons {
 		exit();
 	}
 
+	/**
+	 * Renders the editing metabox
+	 *
+	 * @param WP_Post $coupon
+	 */
 	public function render_edit_metabox( WP_Post $coupon ) {
 		printf(
 			'<table class="form-table">

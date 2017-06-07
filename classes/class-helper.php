@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains helper functions for dealing with coupon codes
  */
@@ -156,7 +157,7 @@ class WP_Simple_Coupons_Helper {
 	 * @param array $coupons
 	 * @param $post_id
 	 *
-	 * @return false|int
+	 * @return int
 	 */
 	public function add_coupons( array $coupons, $post_id ) {
 		global $wpdb;
@@ -185,7 +186,7 @@ class WP_Simple_Coupons_Helper {
 	 * @param array $coupons
 	 * @param $post_id
 	 *
-	 * @return false|int
+	 * @return int
 	 */
 	public function delete_coupons( array $coupons, $post_id ) {
 		global $wpdb;
@@ -242,7 +243,7 @@ class WP_Simple_Coupons_Helper {
 	 * @param $coupon_id
 	 * @param $id
 	 *
-	 * @return array|string
+	 * @return string|null
 	 */
 	public function associate_code( $coupon_id, $id ) {
 		// Check if the id is already associated with a code
