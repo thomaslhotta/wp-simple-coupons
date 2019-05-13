@@ -62,7 +62,7 @@ class WP_Simple_Coupons {
 	 */
 	public function register_post_type() {
 		$labels = array(
-			'name'               => __( 'Coupons','wp-simple-coupons' ),
+			'name'               => __( 'Coupons', 'wp-simple-coupons' ),
 			'singular_name'      => __( 'Coupons', 'wp-simple-coupons' ),
 			'add_new'            => __( 'Add Coupon', 'wp-simple-coupons' ),
 			'new_item'           => __( 'New Coupon', 'wp-simple-coupons' ),
@@ -75,16 +75,16 @@ class WP_Simple_Coupons {
 		);
 
 		$args = array(
-			'labels'             => $labels,
-			'public'             => false,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => false,
-			'capability_type'    => 'post',
-			'has_archive'        => false,
-			'hierarchical'       => false,
-			'menu_position'      => null,
-			'supports'           => array( 'title' ),
+			'labels'          => $labels,
+			'public'          => false,
+			'show_ui'         => true,
+			'show_in_menu'    => true,
+			'query_var'       => false,
+			'capability_type' => 'post',
+			'has_archive'     => false,
+			'hierarchical'    => false,
+			'menu_position'   => null,
+			'supports'        => array( 'title' ),
 		);
 
 		register_post_type( 'coupon', $args );
@@ -99,7 +99,7 @@ class WP_Simple_Coupons {
 
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = 'CREATE TABLE IF NOT EXISTS ' . self::get_instance()->get_helper()->get_coupon_codes_table() . ' (';
+		$sql  = 'CREATE TABLE IF NOT EXISTS ' . self::get_instance()->get_helper()->get_coupon_codes_table() . ' (';
 		$sql .= 'id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,';
 		$sql .= 'blog_id bigint(20) NOT NULL,';
 		$sql .= 'post_id bigint(20) NOT NULL,';

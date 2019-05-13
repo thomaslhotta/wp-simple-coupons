@@ -4,6 +4,7 @@
  * Contains helper functions for dealing with coupon codes
  */
 class WP_Simple_Coupons_Helper {
+
 	/**
 	 * Returns all coupon post
 	 *
@@ -12,8 +13,8 @@ class WP_Simple_Coupons_Helper {
 	public function get_all_coupons() {
 		return get_posts(
 			array(
-				'post_type' => 'coupon',
-				'posts_per_page' => -1,
+				'post_type'      => 'coupon',
+				'posts_per_page' => - 1,
 			)
 		);
 	}
@@ -66,7 +67,7 @@ class WP_Simple_Coupons_Helper {
 
 		$table = $this->get_coupon_codes_table();
 
-		$codes = $wpdb->get_row(
+		$codes = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT code FROM $table WHERE blog_id = %d AND post_id = %d",
 				get_current_blog_id(),
@@ -114,9 +115,9 @@ class WP_Simple_Coupons_Helper {
 		$generated = '';
 
 		do {
-			$chars = wp_generate_password( $length, false, false );
-			$chars = strtoupper( $chars );
-			$chars = str_replace( array( '0', 'O', 'I', '1' ), '', $chars );
+			$chars      = wp_generate_password( $length + 12, false, false );
+			$chars      = strtoupper( $chars );
+			$chars      = str_replace( [ '0', 'O', 'I', '1' ], '', $chars );
 			$generated .= $chars;
 
 		} while ( strlen( $generated ) < $length );
@@ -139,7 +140,7 @@ class WP_Simple_Coupons_Helper {
 
 		foreach ( $input as $key => $val ) {
 			if ( is_array( $val ) ) {
-				$val = reset( $val );
+				$val           = reset( $val );
 				$input[ $key ] = $val;
 			}
 
@@ -237,6 +238,25 @@ class WP_Simple_Coupons_Helper {
 		return $code;
 	}
 
+	public function get_most_recent_code_for_association_id( $id ) {
+		global $wpdb;
+		$table = $this->get_coupon_codes_table();
+
+		$code = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT code FROM $table WHERE blog_id = %d AND association_id = %d ORDER BY id DESC LIMIT 1",
+				get_current_blog_id(),
+				$id
+			)
+		);
+
+		if ( empty( $code ) ) {
+			return null;
+		};
+
+		return $code;
+	}
+
 	/**
 	 * Associates a code with the given id.
 	 *
@@ -280,6 +300,20 @@ class WP_Simple_Coupons_Helper {
 		);
 
 		return $code->code;
+	}
+
+	/**
+	 * Returns an array of all coupons
+	 *
+	 * @return WP_Post[]
+	 */
+	public function get_coupons() {
+		return get_posts(
+			[
+				'post_type' => 'coupon',
+				'number'    => 0,
+			]
+		);
 	}
 
 	/**
