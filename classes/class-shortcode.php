@@ -34,6 +34,7 @@ class WP_Simple_Coupons_Shortcodes {
 			array(
 				'id'            => '',
 				'error_message' => '',
+				'display_only'  => '',
 			),
 			$atts,
 			'simple_coupons_shortcode'
@@ -45,6 +46,10 @@ class WP_Simple_Coupons_Shortcodes {
 
 		if ( 'most_recent' === $atts['id'] ) {
 			return esc_attr( $this->helper->get_most_recent_code_for_association_id( get_current_user_id() ) );
+		}
+
+		if ( 'true' === $atts['display_only'] ) {
+			return esc_attr( $this->helper->get_code_for_association_id( $atts['id'], get_current_user_id() ) );
 		}
 
 		return esc_attr( $this->helper->associate_code( $atts['id'], get_current_user_id() ) );
