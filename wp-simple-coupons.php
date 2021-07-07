@@ -104,18 +104,18 @@ class WP_Simple_Coupons {
 
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql  = 'CREATE TABLE IF NOT EXISTS ' . self::get_instance()->get_helper()->get_coupon_codes_table() . ' (';
-		$sql .= 'id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,';
-		$sql .= 'blog_id bigint(20) NOT NULL,';
-		$sql .= 'post_id bigint(20) NOT NULL,';
-		$sql .= 'association_id bigint(20),';
-		$sql .= 'used bigint(20) NOT NULL,';
-		$sql .= 'code varchar(32) NOT NULL,';
-		$sql .= 'UNIQUE KEY id (id),';
-		$sql .= 'KEY blog_id (blog_id),';
-		$sql .= 'KEY post_id (post_id),';
-		$sql .= 'KEY association_id (association_id)';
-		$sql .= ') ' . $charset_collate . ';';
+		$sql = 'CREATE TABLE ' . self::get_instance()->get_helper()->get_coupon_codes_table() . ' (
+				id bigint unsigned NOT NULL AUTO_INCREMENT,
+				blog_id bigint NOT NULL,
+				post_id bigint NOT NULL,
+				association_id bigint,
+				used bigint NOT NULL,
+				code varchar(32) NOT NULL,
+				PRIMARY KEY  (id),
+				KEY blog_id (blog_id),
+				KEY post_id (post_id),
+				KEY association_id (association_id)
+		) ' . $charset_collate . ';';
 
 		dbDelta( $sql );
 	}
